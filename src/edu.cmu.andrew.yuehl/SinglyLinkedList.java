@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class SinglyLinkedList implements Iterable{
+public class SinglyLinkedList {
     private ObjectNode head;
     private ObjectNode tail;
     private int size;
@@ -50,7 +50,7 @@ public class SinglyLinkedList implements Iterable{
      * true if the iterator/pointer is not null
      */
     public boolean hasNext() {
-        if (ptr != null) {
+        if (ptr.getLink() != null) {
             return true;
         }
         return false;
@@ -148,32 +148,12 @@ public class SinglyLinkedList implements Iterable{
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for (Object x: this) {
-            result.append(x).append(" ");
+        ObjectNode pointer = this.head;
+        while (pointer != null) {
+            result.append(pointer.getData());
+            pointer = pointer.getLink();
         }
         return result.toString();
-    }
-    @Override
-    public Iterator iterator() {
-        return new LinkedListIterator();
-    }
-    private class LinkedListIterator implements Iterator {
-        private ObjectNode nextNode;
-        LinkedListIterator() {nextNode = head;}
-
-        @Override
-        public boolean hasNext() {
-            return nextNode != null;
-        }
-        @Override
-        public Object next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
-            }
-            Object returnValue = nextNode.getData();
-            nextNode = nextNode.getLink();
-            return returnValue;
-        }
     }
     /**
      * test each method of the class
@@ -210,12 +190,15 @@ public class SinglyLinkedList implements Iterable{
         head.reset();
         System.out.println(ptr);
         System.out.println("test hasNext() & next()");
+
         while (head.hasNext()) {
             try {
-                System.out.println(head.next());
+                System.out.println(head.next().toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 }
+
+
